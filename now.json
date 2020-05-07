@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "tsb-trees-api-user-management",
   "builds": [{ "src": "src/index.ts", "use": "@now/node" }],
   "public": true,
   "env": {}
