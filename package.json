@@ -2,11 +2,11 @@
   "name": "@tsb/tsb-trees-api-user-management",
   "private": true,
   "version": "0.1.0",
-  "description": "",
+  "description": "vercel/now + auth0 management api for giessdenkiez.de To be able to manage user data.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc -p .",
+    "build:local": "tsc -p .",
     "start": "nodemon",
     "lint-staged": "lint-staged"
   },
@@ -17,7 +17,9 @@
     "@now/node": "^1.5.1",
     "@types/express": "4.17.6",
     "@types/jest": "^25.2.1",
+    "@types/jsonwebtoken": "^8.3.9",
     "@types/micro": "^7.3.3",
+    "@types/micro-cors": "^0.1.0",
     "@types/node": "^13.13.5",
     "@typescript-eslint/eslint-plugin": "2.31.0",
     "@typescript-eslint/parser": "2.31.0",
@@ -37,7 +39,8 @@
     "express": "4.17.1",
     "express-jwt": "^5.3.3",
     "jwks-rsa": "^1.8.0",
-    "micro": "^9.3.4"
+    "micro": "^9.3.4",
+    "micro-cors": "^0.1.1"
   },
   "jest": {
     "preset": "ts-jest",
@@ -135,5 +138,13 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/technologiestiftung/tsb-trees-api-user-management.git"
+  },
+  "bugs": {
+    "url": "https://github.com/technologiestiftung/tsb-trees-api-user-management/issues"
+  },
+  "homepage": "https://github.com/technologiestiftung/tsb-trees-api-user-management#readme"
 }
