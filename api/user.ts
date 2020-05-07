@@ -1,8 +1,9 @@
 import { send } from "micro";
 import { NowRequest, NowResponse } from "@now/node";
-import { getKey, options } from "./_utils/verify-token";
+import { getKey, options } from "./_utils/verify-user-token";
 import { setupResponseData } from "./_utils/setup-response";
 import jwt from "jsonwebtoken";
+import { getUserById, deleteUserById } from "./_utils/management-api";
 
 export default async function (
   request: NowRequest,
@@ -22,13 +23,13 @@ export default async function (
       return send(response, 200);
     }
     if (!request.headers.authorization) {
-      send(
+      return send(
         response,
         401,
         setupResponseData({ message: "sorry not authorized :-(" })
       );
-      return;
     }
+    // console.log(request.headers.authorization);
 
     jwt.verify(
       request.headers.authorization.split(" ")[1],
@@ -36,22 +37,93 @@ export default async function (
       options,
       (err, _decoded) => {
         if (err) {
+          // Errrrrrrr
           console.error(err);
-          send(
+          return send(
             response,
             401,
             setupResponseData({ message: "sorry not authorized: -(" })
           );
         } else {
+          // console.log(decoded);
           switch (request.method) {
             case "GET": {
-              const data = setupResponseData({ data: [] });
-              send(response, 200, data);
+              // sanity checks
+              const { userid } = request.query;
+
+              if (!userid || Array.isArray(userid)) {
+                return send(
+                  response,
+                  400,
+                  setupResponseData({ message: "wrong userid query provided" })
+                );
+              }
+              const decodedUserId = decodeURIComponent(userid);
+              if (!decodedUserId.startsWith("auth0|")) {
+                return send(
+                  response,
+                  400,
+                  setupResponseData({ message: "wrong userid query provided" })
+                );
+              }
+              getUserById(decodedUserId)
+                .then((userData) => {
+                  const data = setupResponseData({ data: userData });
+                  return send(response, 200, data);
+                })
+                .catch((err) => {
+                  console.error(err);
+                  return send(
+                    response,
+                    500,
+                    setupResponseData({ message: "internal server error" })
+                  );
+                });
               break;
             }
             case "DELETE": {
-              const data = setupResponseData({ message: "got a delete" });
-              send(response, 200, data);
+              const { userid } = request.query;
+
+              if (!userid || Array.isArray(userid)) {
+                return send(
+                  response,
+                  400,
+                  setupResponseData({ message: "wrong userid query provided" })
+                );
+              }
+              const decodedUserId = decodeURIComponent(userid);
+
+              if (!decodedUserId.startsWith("auth0|")) {
+                return send(
+                  response,
+                  400,
+                  setupResponseData({
+                    message: "wrong userid query provided not auth0",
+                  })
+                );
+              }
+              deleteUserById(decodedUserId)
+                .then((res) => {
+                  if (res === true) {
+                    const data = setupResponseData({
+                      message: `user ${decodedUserId} succesfully deleteed`,
+                    });
+                    return send(response, 204, data);
+                  } else {
+                    const data = setupResponseData({
+                      message: `user ${decodedUserId} could not be deleted`,
+                    });
+                    return send(response, 400, data);
+                  }
+                })
+                .catch((err) => {
+                  console.error(err);
+                  return send(
+                    response,
+                    500,
+                    setupResponseData({ message: "internal server error" })
+                  );
+                });
               break;
             }
             default: {
@@ -69,7 +141,7 @@ export default async function (
     );
   } catch (error) {
     console.log(error);
-    send(
+    return send(
       response,
       400,
       setupResponseData({
@@ -79,6 +151,5 @@ export default async function (
             : undefined,
       })
     );
-    return;
   }
 }
