@@ -1,4 +1,4 @@
-import got from "got";
+import got, { HTTPError } from "got";
 import { Generic } from "../_common/interfaces";
 import { getEnvs } from "./envs";
 
@@ -80,6 +80,7 @@ export async function deleteUserById(userId: string): Promise<boolean> {
       return false;
     }
   } catch (error) {
+    console.error("error getting token");
     console.error(error);
     return false;
   }
@@ -93,15 +94,27 @@ export async function getUserById(userId: string): Promise<User[]> {
     const reqUrl = `${url}/users/${encodeURIComponent(
       userId
     )}?${"fields=user_id,email,email_verified,name,nickname,username&include_fields=true"}`;
-    // console.log(reqUrl);
     const { body } = await got(reqUrl, {
       headers: headers,
       responseType: "json",
     });
-    console.log(body);
+
     return body as User[];
   } catch (error) {
-    console.error(error);
-    throw error;
+    if (error instanceof HTTPError) {
+      if (error.code === "404") {
+        // console.error(error.message);
+        // console.error(error.stack);
+        return [];
+      } else {
+        throw error;
+      }
+      // console.error(error.code);
+      // console.error(error.message);
+      // console.error(error.stack);
+    } else {
+      // console.error(error);
+      throw error;
+    }
   }
 }

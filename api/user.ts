@@ -1,3 +1,4 @@
+import { HTTPError } from "got";
 import { send } from "micro";
 import { NowRequest, NowResponse } from "@now/node";
 import { getKey, options } from "./_utils/verify-user-token";
@@ -73,10 +74,21 @@ export default async function (
                 })
                 .catch((err) => {
                   console.error(err);
+                  if (err instanceof HTTPError) {
+                    return send(
+                      response,
+                      404,
+                      setupResponseData({
+                        message: "not found",
+                      })
+                    );
+                  }
                   return send(
                     response,
                     500,
-                    setupResponseData({ message: "internal server error" })
+                    setupResponseData({
+                      message: "internal server error from get user",
+                    })
                   );
                 });
               break;
