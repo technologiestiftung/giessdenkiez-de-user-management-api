@@ -17,7 +17,7 @@
     "@now/node": "1.6.1",
     "@types/express": "4.17.6",
     "@types/jest": "25.2.3",
-    "@types/jsonwebtoken": "8.3.9",
+    "@types/jsonwebtoken": "8.5.0",
     "@types/micro": "7.3.3",
     "@types/micro-cors": "0.1.1",
     "@types/node": "13.13.5",
