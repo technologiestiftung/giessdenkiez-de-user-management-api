@@ -19,7 +19,7 @@
     "@types/jest": "25.2.1",
     "@types/jsonwebtoken": "8.3.9",
     "@types/micro": "7.3.3",
-    "@types/micro-cors": "0.1.0",
+    "@types/micro-cors": "0.1.1",
     "@types/node": "13.13.5",
     "@typescript-eslint/eslint-plugin": "2.31.0",
     "@typescript-eslint/parser": "2.31.0",
