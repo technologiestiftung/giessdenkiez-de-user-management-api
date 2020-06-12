@@ -36,6 +36,7 @@ export default async function (
       request.headers.authorization.split(" ")[1],
       getKey,
       options,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (err, _decoded) => {
         if (err) {
           // Errrrrrrr
