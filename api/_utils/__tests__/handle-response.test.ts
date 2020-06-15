@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable jest/prefer-spy-on */
 /* eslint-disable jest/no-hooks */
-/* eslint-disable jest/prefer-called-with */
 /* eslint-disable jest/no-commented-out-tests*/
 import { NowResponse, NowRequest } from "@now/node";
 import { handleVerifiedRequest } from "../handle-response";
@@ -98,21 +96,18 @@ describe("testing responses for GET", () => {
     } as unknown) as NowRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 500, undefined);
   });
-  test.todo(
-    "should call micro with 404 due to throwing HttpError in getUserById"
-  );
-  // test("should call micro with 404 due to throwing HttpError in getUserById", async () => {
-  //   const res = {} as NowResponse;
-  //   jest.spyOn(management, "getUserById").mockImplementation(() => {
-  //     //@ts-ignore
-  //     return Promise.reject(new HTTPError());
-  //   });
-  //   await handleVerifiedRequest(res, ({
-  //     method: "GET",
-  //     query: { userid: "auth0|123" },
-  //   } as unknown) as NowRequest);
-  //   expect(micro.send).toHaveBeenCalledWith(res, 404, undefined);
-  // });
+
+  test("should call micro with 404 due to throwing HttpError in getUserById", async () => {
+    const res = {} as NowResponse;
+    jest.spyOn(management, "getUserById").mockImplementation(() => {
+      return Promise.reject(new HTTPError({} as any));
+    });
+    await handleVerifiedRequest(res, ({
+      method: "GET",
+      query: { userid: "auth0|123" },
+    } as unknown) as NowRequest);
+    expect(micro.send).toHaveBeenCalledWith(res, 404, undefined);
+  });
   test("should call micro with 400 due to missing userid", async () => {
     const res = {} as NowResponse;
     await handleVerifiedRequest(res, ({
