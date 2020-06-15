@@ -1,14 +1,9 @@
 import nock from "nock";
-import * as environment from "../_utils/envs";
-import {
-  getToken,
-  setupHeaders,
-  deleteUserById,
-} from "../_utils/management-api";
+import { getToken, setupHeaders, deleteUserById } from "../management-api";
 const token = "xyz";
 const managementApiUrl = "http://api.abc";
 const managementApiTokenIssuerUrl = "http://api.xyz";
-jest.mock("../_utils/envs", () => {
+jest.mock("../envs", () => {
   return {
     getEnvs: () => {
       return {

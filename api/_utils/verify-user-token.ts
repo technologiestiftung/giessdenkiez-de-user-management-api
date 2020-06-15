@@ -1,9 +1,12 @@
 // Verify using getKey callback
 // Example uses https://github.com/auth0/node-jwks-rsa as a way to fetch the keys.
 import jwksClient from "jwks-rsa";
-import { VerifyOptions, JwtHeader, SigningKeyCallback } from "jsonwebtoken";
+import jwt, {
+  VerifyOptions,
+  JwtHeader,
+  SigningKeyCallback,
+} from "jsonwebtoken";
 import { getEnvs } from "./envs";
-
 const { jwksUri, audienceFrontend, issuer } = getEnvs();
 const client = jwksClient({
   jwksUri,
@@ -25,9 +28,29 @@ export function getKey(header: JwtHeader, callback: SigningKeyCallback): void {
       callback(err);
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const signingKey = key.publicKey || key.rsaPublicKey;
     callback(null, signingKey);
+  });
+}
+
+/**
+ * based on https://codedaily.io/tutorials/174/Unit-Test-Token-Verification-for-Auth0-using-Jest-and-mock-jwks
+ *
+ */
+export async function verifyAuth0Token(
+  token: string,
+  options: VerifyOptions
+  // eslint-disable-next-line @typescript-eslint/ban-types
+): Promise<object | undefined> {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, getKey, options, (err, decoded) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(decoded);
+    });
   });
 }
