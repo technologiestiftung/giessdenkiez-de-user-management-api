@@ -9,7 +9,6 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --coverage",
     "build:local": "tsc -p .",
-    "build": "tsc -p .",
     "start": "nodemon",
     "lint-staged": "lint-staged"
   },
