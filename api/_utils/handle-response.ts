@@ -181,7 +181,6 @@ export async function handleVerifiedRequest(
           500,
           setupResponseData({ message: "internal server error" })
         );
-        break;
       }
     }
   }
