@@ -2,7 +2,6 @@ import got, { HTTPError } from "got";
 import { Generic } from "../_common/interfaces";
 import { getEnvs } from "./envs";
 
-/* eslint-disable @typescript-eslint/camelcase */
 interface Body {
   access_token: string;
   scope: string;
@@ -17,9 +16,9 @@ const {
 export async function getToken(): Promise<string> {
   // try {
   const tokenApiUrl = auth0TokenApiUrlManagementApi;
-  const client_id = auth0ClientIdManagementApi; // process.env.AUTH0_CLIENT_ID;
-  const client_secret = auth0ClientSecretManagementApi; //process.env.AUTH0_CLIENT_SECRET;
-  const audience = auth0ManagementApiAudience; //process.env.AUTH0_AUDIENCE;
+  const client_id = auth0ClientIdManagementApi;
+  const client_secret = auth0ClientSecretManagementApi;
+  const audience = auth0ManagementApiAudience;
   const body = {
     client_id,
     client_secret,
@@ -57,7 +56,7 @@ interface User {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function setupHeaders(token: string) {
+export function setupHeaders(token: string): { authorization: string } {
   const headers = {
     authorization: `Bearer ${token}`,
   };

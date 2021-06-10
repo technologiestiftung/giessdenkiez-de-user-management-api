@@ -3,7 +3,7 @@ import user from "../user";
 import * as micro from "micro";
 import * as handlers from "../_utils/handle-response";
 import * as verify from "../_utils/verify-user-token";
-import { NowResponse, NowRequest } from "@now/node";
+import { VercelResponse, VercelRequest } from "@vercel/node";
 import { Generic } from "../_common/interfaces";
 jest.mock("micro");
 jest.mock("../_utils/handle-response");
@@ -37,10 +37,10 @@ jest.mock("../_utils/envs", () => {
 });
 
 function setupRes(overrides?: Generic) {
-  return ({ setHeader: jest.fn(), ...overrides } as unknown) as NowResponse;
+  return ({ setHeader: jest.fn(), ...overrides } as unknown) as VercelResponse;
 }
 function setupReq(overrides?: Generic) {
-  return { method: "OPTIONS", ...overrides } as NowRequest;
+  return { method: "OPTIONS", ...overrides } as VercelRequest;
 }
 describe("should call the user object", () => {
   afterAll(() => {

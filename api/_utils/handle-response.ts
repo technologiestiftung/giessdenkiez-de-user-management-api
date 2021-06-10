@@ -1,38 +1,12 @@
 import { HTTPError } from "got";
 import { send } from "micro";
-import { NowRequest, NowResponse } from "@now/node";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 import { setupResponseData } from "./setup-response";
-// import jwt from "jsonwebtoken";
 import { getUserById, deleteUserById } from "./management-api";
 
-/**
- * @deprecated
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// function verificationCallback(
-//   response: NowResponse,
-//   request: NowRequest
-// ): jwt.VerifyCallback | undefined {
-//   return (err, _decoded) => {
-//     if (err) {
-//       // Errrrrrrr
-//       console.error(err);
-//       return send(
-//         response,
-//         401,
-//         setupResponseData({ message: "sorry not authorized: -(" })
-//       );
-//     } else {
-//       handleVerifiedRequest(response, request);
-//       // console.log(decoded);
-//       // end of switch
-//     }
-//   };
-// }
-
 export async function handleVerifiedRequest(
-  response: NowResponse,
-  request: NowRequest
+  response: VercelResponse,
+  request: VercelRequest
 ): Promise<void> {
   try {
     switch (request.method) {
