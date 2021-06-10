@@ -25,7 +25,10 @@ export default async function (
       return send(
         response,
         401,
-        setupResponseData({ message: "sorry not authorized :-(" })
+        setupResponseData({
+          message:
+            "Unauthorized: The authorization header was not present in the request",
+        })
       );
     }
     // console.log(request.headers.authorization);
@@ -37,7 +40,9 @@ export default async function (
         return send(
           response,
           401,
-          setupResponseData({ message: "sorry not authorized :-(" })
+          setupResponseData({
+            message: "Unauthorized: The provided JWT token is invalid",
+          })
         );
       } else {
         // token should be valid now
@@ -50,12 +55,6 @@ export default async function (
       );
       throw e;
     }
-    // jwt.verify(
-    //   request.headers.authorization.split(" ")[1],
-    //   getKey,
-    //   options,
-    //   verificationCallback(response, request) // end verify cb
-    // );
   } catch (error) {
     console.log(error);
     return send(
