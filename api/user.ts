@@ -18,7 +18,10 @@ export default async function (
     if (request.method === "OPTIONS") {
       return send(response, 200);
     }
-    if (!request.headers?.authorization) {
+    const authorization =
+      request.headers?.authorization ||
+      (request.headers?.Authorization as string);
+    if (!authorization) {
       return send(
         response,
         401,
@@ -28,7 +31,7 @@ export default async function (
     // console.log(request.headers.authorization);
 
     try {
-      const token = request.headers.authorization.split(" ")[1];
+      const token = authorization.split(" ")[1];
       const decoded = await verifyAuth0Token(token, options);
       if (decoded === undefined) {
         return send(
