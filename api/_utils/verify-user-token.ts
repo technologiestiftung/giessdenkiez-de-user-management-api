@@ -29,6 +29,7 @@ export function getKey(header: JwtHeader, callback: SigningKeyCallback): void {
       return;
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     const signingKey = key.publicKey || key.rsaPublicKey;
     callback(null, signingKey);

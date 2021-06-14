@@ -1,12 +1,12 @@
 import { send } from "micro";
-import { NowRequest, NowResponse } from "@now/node";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 import { options, verifyAuth0Token } from "./_utils/verify-user-token";
 import { setupResponseData } from "./_utils/setup-response";
 import { handleVerifiedRequest } from "./_utils/handle-response";
 
 export default async function (
-  request: NowRequest,
-  response: NowResponse
+  request: VercelRequest,
+  response: VercelResponse
 ): Promise<void> {
   try {
     response.setHeader("Access-Control-Allow-Origin", "*");
