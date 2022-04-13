@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { merge } = require("@inpyjamas/scripts/dist/utlities");
 const localConfig = {
   ignorePatterns: ["node_modules", "dist", "coverage"],
@@ -5,11 +7,7 @@ const localConfig = {
     "jest/consistent-test-it": ["error", { fn: "it", withinDescribe: "test" }],
     "@typescript-eslint/no-unused-vars": [
       "warn",
-      {
-        args: "after-used",
-        varsIgnorePattern: "^_",
-        argsIgnorePattern: "^_",
-      },
+      { args: "after-used", varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
     ],
   },
 };
