@@ -35,7 +35,10 @@ export default async function (
 
     try {
       const token = authorization.split(" ")[1];
-      const decoded = await verifyAuth0Token(token, options);
+      const decoded = (await verifyAuth0Token(token, options)) as {
+        sub: string;
+        [key: string]: unknown;
+      };
       if (decoded === undefined) {
         return send(
           response,
@@ -45,6 +48,19 @@ export default async function (
           })
         );
       } else {
+        const { sub } = decoded;
+        if (sub !== request.query.userid) {
+          console.warn(
+            "Someone is trying to delete/get a account that is not his"
+          );
+          return send(
+            response,
+            403,
+            setupResponseData({
+              message: "Unauthorized",
+            })
+          );
+        }
         // token should be valid now
         await handleVerifiedRequest(response, request);
       }
