@@ -7,33 +7,36 @@ import jwt, {
   SigningKeyCallback,
 } from "jsonwebtoken";
 import { getEnvs } from "./envs";
-const { jwksUri, audienceFrontend, issuer } = getEnvs();
+const {
+  jwksUri,
+  // audienceFrontend,
+  issuer,
+} = getEnvs();
 const client = jwksClient({
   jwksUri,
 });
 
 export const options: VerifyOptions = {
-  audience: audienceFrontend,
+  // audience: audienceFrontend,
   issuer,
   algorithms: ["RS256"],
 };
 
 export function getKey(header: JwtHeader, callback: SigningKeyCallback): void {
   if (!header.kid) throw new Error("Header.kid is missing");
-  client.getSigningKey(header.kid, function (
-    err: Error | null,
-    key: jwksClient.SigningKey
-  ) {
-    if (err) {
-      callback(err);
-      return;
+  client.getSigningKey(
+    header.kid,
+    function (err: Error | null, key: jwksClient.SigningKey) {
+      if (err) {
+        callback(err);
+        return;
+      }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const signingKey = key.publicKey || key.rsaPublicKey;
+      callback(null, signingKey);
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    const signingKey = key.publicKey || key.rsaPublicKey;
-    callback(null, signingKey);
-  });
+  );
 }
 
 /**
@@ -44,7 +47,7 @@ export async function verifyAuth0Token(
   token: string,
   options: VerifyOptions
   // eslint-disable-next-line @typescript-eslint/ban-types
-): Promise<object | undefined> {
+): Promise<unknown> {
   return new Promise((resolve, reject) => {
     jwt.verify(token, getKey, options, (err, decoded) => {
       if (err) {
