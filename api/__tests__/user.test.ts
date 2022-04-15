@@ -4,7 +4,6 @@ import * as micro from "micro";
 import * as handlers from "../_utils/handle-response";
 import * as verify from "../_utils/verify-user-token";
 import { VercelResponse, VercelRequest } from "@vercel/node";
-import { Generic } from "../_common/interfaces";
 jest.mock("micro");
 jest.mock("../_utils/handle-response");
 jest.mock("../_utils/setup-response", () => {
@@ -36,10 +35,10 @@ jest.mock("../_utils/envs", () => {
   };
 });
 
-function setupRes(overrides?: Generic) {
+function setupRes(overrides?: { [key: string]: unknown }) {
   return { setHeader: jest.fn(), ...overrides } as unknown as VercelResponse;
 }
-function setupReq(overrides?: Generic) {
+function setupReq(overrides?: { [key: string]: unknown }) {
   return { method: "OPTIONS", ...overrides } as VercelRequest;
 }
 describe("should call the user object", () => {
