@@ -1,5 +1,4 @@
 import got, { HTTPError } from "got";
-import { Generic } from "../_common/interfaces";
 import { getEnvs } from "./envs";
 
 interface Body {
@@ -13,6 +12,19 @@ const {
   auth0ManagementApiAudience,
   auth0TokenApiUrlManagementApi,
 } = getEnvs();
+
+export const userQuery = () => {
+  const fields = [
+    "user_id",
+    "email",
+    "email_verified",
+    "name",
+    "nickname",
+    "username",
+  ];
+
+  return `fields=${fields.join(",")}&include_fields=true`;
+};
 export async function getToken(): Promise<string> {
   // try {
   const tokenApiUrl = auth0TokenApiUrlManagementApi;
@@ -46,7 +58,7 @@ interface User {
   nickname: string;
   user_id: string;
   created_at?: string;
-  identities?: Generic[];
+  identities?: { [key: string]: unknown }[];
   picture?: string;
   updated_at?: string;
   user_metadata?: { username: string };
@@ -90,9 +102,7 @@ export async function getUserById(userId: string): Promise<User[]> {
     const url = auth0ManagementApiUrl;
     const headers = setupHeaders(token);
     // const users: User[] = [];
-    const reqUrl = `${url}/users/${encodeURIComponent(
-      userId
-    )}?${"fields=user_id,email,email_verified,name,nickname,username&include_fields=true"}`;
+    const reqUrl = `${url}/users/${encodeURIComponent(userId)}?${userQuery()}`;
     const { body } = await got(reqUrl, {
       headers: headers,
       responseType: "json",
