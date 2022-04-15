@@ -92,10 +92,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/technologiestiftung/tsb-trees-api-user-management.git"
+    "url": "git+https://github.com/technologiestiftung/giessdenkiez-de-user-management-api.git"
   },
   "bugs": {
-    "url": "https://github.com/technologiestiftung/tsb-trees-api-user-management/issues"
+    "url": "https://github.com/technologiestiftung/giessdenkiez-de-user-management-api/issues"
   },
-  "homepage": "https://github.com/technologiestiftung/tsb-trees-api-user-management#readme"
+  "homepage": "https://github.com/technologiestiftung/giessdenkiez-de-user-management-api#readme",
+  "keywords": [
+    "giessdenkiez.de",
+    "technologiestiftung"
+  ]
 }
