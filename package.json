@@ -1,5 +1,5 @@
 {
-  "name": "@tsb/tsb-trees-api-user-management",
+  "name": "@technologiesitftung/giessdenkiez-de-user-management-api",
   "private": true,
   "version": "0.1.0",
   "description": "vercel/now + auth0 management api for giessdenkiez.de To be able to manage user data.",
