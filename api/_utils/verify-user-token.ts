@@ -7,17 +7,13 @@ import jwt, {
   SigningKeyCallback,
 } from "jsonwebtoken";
 import { getEnvs } from "./envs";
-const {
-  jwksUri,
-  // audienceFrontend,
-  issuer,
-} = getEnvs();
+const { jwksUri, audienceFrontend, issuer } = getEnvs();
 const client = jwksClient({
   jwksUri,
 });
 
 export const options: VerifyOptions = {
-  // audience: audienceFrontend,
+  audience: audienceFrontend,
   issuer,
   algorithms: ["RS256"],
 };

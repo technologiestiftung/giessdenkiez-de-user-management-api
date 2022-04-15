@@ -52,36 +52,36 @@ describe("testing responses for GET", () => {
   });
   test("should call micro with 200 and user data", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "GET",
       query: { userid: "auth0|123" },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
 
     expect(micro.send).toHaveBeenCalledWith(res, 200, undefined);
   });
   test("should call micro with 400 due to wrong id", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "GET",
       query: { userid: "123" },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     // expect(micro.send).toHaveBeenCalled();
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
   test("should call micro with 400 due to missing user id", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "GET",
       query: {},
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
   test("should call micro with 400 due to wrong type", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "GET",
       query: { userid: ["foo"] },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
 
@@ -90,10 +90,10 @@ describe("testing responses for GET", () => {
       throw new Error("err");
     });
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "GET",
       query: { userid: "auth0|123" },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 500, undefined);
   });
 
@@ -102,34 +102,34 @@ describe("testing responses for GET", () => {
     jest.spyOn(management, "getUserById").mockImplementation(() => {
       return Promise.reject(new HTTPError({} as any));
     });
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "GET",
       query: { userid: "auth0|123" },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 404, undefined);
   });
   test("should call micro with 400 due to missing userid", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "DELETE",
       query: {},
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
   test("should call micro with 400 due to wrong userid", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "DELETE",
       query: { userid: [] },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
   test("should call micro with 400 due to another wrong userid", async () => {
     const res = {} as VercelResponse;
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "DELETE",
       query: { userid: {} },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
 
@@ -139,10 +139,10 @@ describe("testing responses for GET", () => {
       .spyOn(management, "deleteUserById")
       .mockImplementation(() => Promise.resolve(true));
 
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "DELETE",
       query: { userid: "auth0|123" },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 204, undefined);
   });
 
@@ -152,10 +152,10 @@ describe("testing responses for GET", () => {
       .spyOn(management, "deleteUserById")
       .mockImplementation(() => Promise.resolve(false));
 
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "DELETE",
       query: { userid: "auth0|123" },
-    } as unknown) as VercelRequest);
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 400, undefined);
   });
 
@@ -165,10 +165,10 @@ describe("testing responses for GET", () => {
       .spyOn(management, "deleteUserById")
       .mockImplementation(() => Promise.resolve(false));
 
-    await handleVerifiedRequest(res, ({
+    await handleVerifiedRequest(res, {
       method: "PUT",
-      // query: { userid: "auth0|123" },
-    } as unknown) as VercelRequest);
+      query: { userid: "auth0|123" },
+    } as unknown as VercelRequest);
     expect(micro.send).toHaveBeenCalledWith(res, 404, undefined);
   });
 });

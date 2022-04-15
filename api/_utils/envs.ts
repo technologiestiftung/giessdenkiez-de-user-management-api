@@ -2,7 +2,7 @@ interface Envs {
   jwksUri: string;
   // audience: string;
   issuer: string;
-  // audienceFrontend: string;
+  audienceFrontend: string;
   auth0ClientIdManagementApi: string;
   auth0ClientSecretManagementApi: string;
   auth0ManagementApiAudience: string;
@@ -11,7 +11,7 @@ interface Envs {
 }
 export function getEnvs(): Envs {
   const jwksUri = process.env.JWKS_URI;
-  // const audienceFrontend = process.env.AUTH0_AUDIENCE_FRONTEND;
+  const audienceFrontend = process.env.AUTH0_AUDIENCE_FRONTEND;
   // const audience = process.env.AUTH0_AUDIENCE;
   const issuer = process.env.AUTH0_ISSUER;
 
@@ -26,7 +26,7 @@ export function getEnvs(): Envs {
 
   if (!jwksUri) throw new Error("Could not find jwksUri");
   // if (!audience) throw new Error("Could not find audience");
-  // if (!audienceFrontend) throw new Error("Could not find audienceFrontend");
+  if (!audienceFrontend) throw new Error("Could not find audienceFrontend");
   if (!issuer) throw new Error("Could not find issuer");
   if (!auth0ClientIdManagementApi)
     throw new Error("Could not find auth0ClientIdManagementApi");
@@ -42,6 +42,7 @@ export function getEnvs(): Envs {
   return {
     issuer,
     jwksUri,
+    audienceFrontend,
     auth0ClientIdManagementApi,
     auth0ClientSecretManagementApi,
     auth0ManagementApiAudience,
