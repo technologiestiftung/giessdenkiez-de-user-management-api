@@ -9,17 +9,17 @@ export async function handleVerifiedRequest(
   request: VercelRequest
 ): Promise<void> {
   try {
+    const { userid } = request.query;
+    if (!userid || Array.isArray(userid)) {
+      return send(
+        response,
+        400,
+        setupResponseData({ message: "wrong userid query provided" })
+      );
+    }
     switch (request.method) {
       case "GET": {
         // sanity checks
-        const { userid } = request.query;
-        if (!userid || Array.isArray(userid)) {
-          return send(
-            response,
-            400,
-            setupResponseData({ message: "wrong userid query provided" })
-          );
-        }
         const decodedUserId = decodeURIComponent(userid);
         if (!decodedUserId.startsWith("auth0|")) {
           return send(
@@ -31,43 +31,8 @@ export async function handleVerifiedRequest(
         const userData = await getUserById(decodedUserId);
         const data = setupResponseData({ data: userData });
         return send(response, 200, data);
-
-        // getUserById(decodedUserId)
-        //   .then((userData) => {
-        //     const data = setupResponseData({ data: userData });
-        //     return send(response, 200, data);
-        //   })
-        //   .catch((err) => {
-        //     console.error(err);
-        //     if (err instanceof HTTPError) {
-        //       return send(
-        //         response,
-        //         404,
-        //         setupResponseData({
-        //           message: "not found",
-        //         })
-        //       );
-        //     }
-        //     return send(
-        //       response,
-        //       500,
-        //       setupResponseData({
-        //         message: "internal server error from get user",
-        //       })
-        //     );
-        //   });
-        // break;
       }
       case "DELETE": {
-        const { userid } = request.query;
-
-        if (!userid || Array.isArray(userid)) {
-          return send(
-            response,
-            400,
-            setupResponseData({ message: "wrong userid query provided" })
-          );
-        }
         const decodedUserId = decodeURIComponent(userid);
 
         if (!decodedUserId.startsWith("auth0|")) {
@@ -76,6 +41,18 @@ export async function handleVerifiedRequest(
             400,
             setupResponseData({
               message: "wrong userid query provided not auth0",
+            })
+          );
+        }
+        if (!(decodedUserId === userid)) {
+          console.warn(
+            "somebody is trying to delete a user without beeing the user "
+          );
+          return send(
+            response,
+            403,
+            setupResponseData({
+              message: "wrong userid provided",
             })
           );
         }

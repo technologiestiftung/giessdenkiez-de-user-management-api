@@ -1,0 +1,20 @@
+@baseurl = http://localhost:3000
+@access_token = {{$dotenv ACCESS_TOKEN}}
+
+@user_id = {{$dotenv USER_ID}}
+### health check
+GET {{baseurl}}/api
+
+
+### users OPTIONS
+
+OPTIONS {{baseurl}}/api/user
+
+### users GET
+
+GET {{baseurl}}/api/user?userid={{user_id}}
+Authorization: Bearer {{access_token}}
+
+### user DELETE
+DELETE {{baseurl}}/api/user?userid={{user_id}}
+Authorization: Bearer {{access_token}}

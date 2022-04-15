@@ -40,10 +40,9 @@ export function getEnvs(): Envs {
     throw new Error("Could not find auth0ManagementApiUrl");
 
   return {
-    audienceFrontend,
-    // audience,
     issuer,
     jwksUri,
+    audienceFrontend,
     auth0ClientIdManagementApi,
     auth0ClientSecretManagementApi,
     auth0ManagementApiAudience,

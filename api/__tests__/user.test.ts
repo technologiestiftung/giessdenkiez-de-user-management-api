@@ -37,7 +37,7 @@ jest.mock("../_utils/envs", () => {
 });
 
 function setupRes(overrides?: Generic) {
-  return ({ setHeader: jest.fn(), ...overrides } as unknown) as VercelResponse;
+  return { setHeader: jest.fn(), ...overrides } as unknown as VercelResponse;
 }
 function setupReq(overrides?: Generic) {
   return { method: "OPTIONS", ...overrides } as VercelRequest;
@@ -87,10 +87,11 @@ describe("should call the user object", () => {
   test("call handleVerifiedRequest if it passes", async () => {
     jest
       .spyOn(verify, "verifyAuth0Token")
-      .mockImplementation(() => Promise.resolve({ token: "foo" }));
+      .mockImplementation(() => Promise.resolve({ token: "foo", sub: "foo" }));
     const res = setupRes();
     const req = setupReq({
       method: "GET",
+      query: { userid: "foo" },
       headers: { authorization: "Bearer xyz" },
     });
     await user(req, res);
