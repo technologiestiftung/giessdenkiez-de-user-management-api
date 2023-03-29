@@ -29,7 +29,7 @@
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-jest": "26.9.0",
     "jest": "27.5.1",
-    "mock-jwks": "0.3.5",
+    "mock-jwks": "1.0.9",
     "nock": "13.3.0",
     "nodemon": "2.0.22",
     "prettier": "2.8.7",
@@ -40,7 +40,7 @@
   "dependencies": {
     "@vercel/node": "1.14.1",
     "got": "11.8.3",
-    "jwks-rsa": "1.12.3",
+    "jwks-rsa": "2.0.0",
     "micro": "9.3.4"
   },
   "nodemonConfig": {
