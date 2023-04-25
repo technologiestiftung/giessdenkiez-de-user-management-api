@@ -16,7 +16,7 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@inpyjamas/scripts": "0.1.12-alpha",
+    "@inpyjamas/scripts": "1.0.0",
     "@types/jest": "27.5.2",
     "@types/jsonwebtoken": "8.5.9",
     "@types/micro": "7.3.7",
