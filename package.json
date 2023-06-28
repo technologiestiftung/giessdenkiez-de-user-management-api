@@ -38,7 +38,7 @@
     "vercel": "24.2.5"
   },
   "dependencies": {
-    "@vercel/node": "1.14.1",
+    "@vercel/node": "2.15.3",
     "got": "11.8.3",
     "jwks-rsa": "1.12.3",
     "micro": "9.3.4"
